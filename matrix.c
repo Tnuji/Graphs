@@ -31,7 +31,7 @@ graphPT newGraph(int N, int undirected)
     {
        result -> E[row] = (int*) calloc(N, sizeof(int));
     }
-
+lol
 }
 void destroyGraph(graphPT g)
 {
