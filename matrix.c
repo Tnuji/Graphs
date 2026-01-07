@@ -61,7 +61,7 @@ int vertexValidity(graphPT g, int vertex)
 // Edge operations
 int edgeExists(graphPT g, int v1, int v2)
 {
-    if(g == NULL) return;
+    if(g == NULL) return;return;
 }
 int addEdge(graphPT g, int v1, int v2);
 int removeEdge(graphPT g, int v1, int v2);
