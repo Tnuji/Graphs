@@ -31,7 +31,6 @@ graphPT newGraph(int N, int undirected)
     {
        result -> E[row] = (int*) calloc(N, sizeof(int));
     }
-lol
 }
 void destroyGraph(graphPT g)
 {
@@ -48,10 +47,23 @@ void destroyGraph(graphPT g)
 }
 
 // Basic graph info
-int numVertices(graphPT g);
+int numVertices(graphPT g)
+{
+    if(g == NULL) return;
+    return g->N;
+}
 
+int vertexValidity(graphPT g, int vertex)
+{
+    if(g == NULL) return;
+    if(vertex < 0 || vertex)
+}
 // Edge operations
-int edgeExists(graphPT g, int v1, int v2);
+int edgeExists(graphPT g, int v1, int v2)
+{
+    if(g == NULL) return;
+    
+}
 int addEdge(graphPT g, int v1, int v2);
 int removeEdge(graphPT g, int v1, int v2);
 
