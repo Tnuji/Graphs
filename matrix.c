@@ -3,7 +3,7 @@
 
 typedef struct
 {
-   int undirected; // 1 for directe or 0 for undirected
+   int undirected; // 1 for undirected or 0 for directed
    int N; // number of vertices
    int ** E; // number of edges
 } *graphPT;
@@ -32,6 +32,7 @@ graphPT newGraph(int N, int undirected)
        result -> E[row] = (int*) calloc(N, sizeof(int));
     }
 }
+// Function destroys the created graph.
 void destroyGraph(graphPT g)
 {
     if(g == NULL) return;
@@ -46,28 +47,101 @@ void destroyGraph(graphPT g)
     free(g);
 }
 
-// Basic graph info
+// Counts how many vertices(points) there are.
 int numVertices(graphPT g)
 {
     if(g == NULL) return;
     return g->N;
 }
 
+//Checks whether or not a vertex is valid
 int vertexValidity(graphPT g, int vertex)
 {
     if(g == NULL) return;
-    if(vertex < 0 || vertex)
+    if(vertex < 0 || vertex >= (g -> N))
+    {
+        return 0;
+    }
+    return 1;
 }
-// Edge operations
+// Checks whether or not there exists an edge(connection) between two vertices(points)
 int edgeExists(graphPT g, int v1, int v2)
 {
-    if(g == NULL) return;return;
+    if(g == NULL) return 0;
+    if(!(vertexValidity(g, v1)) || ! (vertexValidity(g, v2)))
+    {
+        printf("\nInvalid Vertex! No edge!");
+        return 0;
+    }
+
+    return g -> E[v1][v2];
 }
-int addEdge(graphPT g, int v1, int v2);
-int removeEdge(graphPT g, int v1, int v2);
+
+//Creates an edge (connection) between two points
+void addEdge(graphPT g, int v1, int v2)
+{
+    if(g == NULL) return;
+    if(!(vertexValidity(g, v1)) || ! (vertexValidity(g, v2)))
+    {
+        printf("\nInvalid Vertex! Edge not created.");
+        return;
+    }
+    g -> E[v1][v2] = 1;
+    if(g -> undirected == 1)
+    {
+        g -> E[v2][v1] = 1;
+    }
+}
+//Remove an edge(connection) from the graph
+int removeEdge(graphPT g, int v1, int v2)
+{
+    if(g == NULL) return;
+    if(!(vertexValidity(g, v1)) || ! (vertexValidity(g, v2)))
+    {
+        printf("\nInvalid Vertex! Edge not created.");
+        return;
+    }
+    g -> E[v1][v2] = 0;
+    if(g -> undirected == 1)
+    {
+        g -> E[v2][v1] = 0;
+    }
+}
 
 // Vertex operations
-int* vertexNeighbors(graphPT g, int v, int* res_size);
+int* vertexNeighbors(graphPT g, int v, int* res_size)
+{
+    if(g == NULL) return;
+    if(!(vertexValidity(g, v)))
+    {
+        printf("\nInvalid Vertex! Edge not created.");
+        return;
+    }
+
+    int count = 0;
+    for(int i = 0; i < g -> N; ++i)
+    {
+        if(g -> E[v][i] == 1)
+        {
+            ++count;
+        }
+    }
+
+    res_size = count;
+    int *res = malloc(count * sizeof(int));
+
+    int j = 0;
+    for(int i = 0; i < g -> N; ++i)
+    {
+        if(g -> E[v][i] == 1)
+        {
+            res[j] = i;
+            ++j;
+        }
+    }
+
+    return res;
+}
 
 // Display helpers
 void printGraph(graphPT g);
