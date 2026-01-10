@@ -144,9 +144,27 @@ int* vertexNeighbors(graphPT g, int v, int* res_size)
 }
 
 // Display helpers
-void printGraph(graphPT g);
-void printNeighbors(graphPT g, int v);
+void printGraph(graphPT g)
+{
+
+}
+void printNeighbors(graphPT g, int v)
+{
+    if(g == NULL) return;
+    if(!(vertexValidity(g,v)))
+    {
+        printf("\nInvalid Vertex!");
+        return;
+    }
+
+    int neighbors_size;
+    int *neighbors  = vertexNeighbors(g, v, &neighbors_size);
+
+    for(int i = 0; i < )
+}
 
 // Accessors
-int** getAdjacencyMatrix(graphPT g);
-
+int** getAdjacencyMatrix(graphPT g)
+{
+    return g -> E;
+}
