@@ -21,7 +21,7 @@ typedef struct
 // Graph creation / destruction
 graphPT newGraph(int N, int undirected)
 {
-    graphPT result = (graphPT) malloc(sizeof(*result));
+    graphPT result = malloc(sizeof(*result));
     result -> undirected = undirected;
     result -> N = N;
 
@@ -31,6 +31,8 @@ graphPT newGraph(int N, int undirected)
     {
        result -> E[row] = (int*) calloc(N, sizeof(int));
     }
+
+    return result;
 }
 // Function destroys the created graph.
 void destroyGraph(graphPT g)
@@ -50,14 +52,14 @@ void destroyGraph(graphPT g)
 // Counts how many vertices(points) there are.
 int numVertices(graphPT g)
 {
-    if(g == NULL) return;
+    if(g == NULL) return 0;
     return g->N;
 }
 
 //Checks whether or not a vertex is valid
 int vertexValidity(graphPT g, int vertex)
 {
-    if(g == NULL) return;
+    if(g == NULL) return 0;
     if(vertex < 0 || vertex >= (g -> N))
     {
         return 0;
@@ -93,7 +95,7 @@ void addEdge(graphPT g, int v1, int v2)
     }
 }
 //Remove an edge(connection) from the graph
-int removeEdge(graphPT g, int v1, int v2)
+void removeEdge(graphPT g, int v1, int v2)
 {
     if(g == NULL) return;
     if(!(vertexValidity(g, v1)) || ! (vertexValidity(g, v2)))
@@ -111,11 +113,11 @@ int removeEdge(graphPT g, int v1, int v2)
 // Vertex operations
 int* vertexNeighbors(graphPT g, int v, int* res_size)
 {
-    if(g == NULL) return;
+    if(g == NULL) return NULL;
     if(!(vertexValidity(g, v)))
     {
         printf("\nInvalid Vertex! Edge not created.");
-        return;
+        return NULL;
     }
 
     int count = 0;
@@ -127,7 +129,7 @@ int* vertexNeighbors(graphPT g, int v, int* res_size)
         }
     }
 
-    res_size = count;
+    *res_size = count;
     int *res = malloc(count * sizeof(int));
 
     int j = 0;
@@ -143,11 +145,21 @@ int* vertexNeighbors(graphPT g, int v, int* res_size)
     return res;
 }
 
-// Display helpers
+// Prints the entire graph of vertices and edges by using the print neighbors function
 void printGraph(graphPT g)
 {
+    if(g == NULL) return;
 
+    for(int v = 0; v < g -> N; ++v)
+    {
+        printNeighbors(g,v);
+        printf("\n");
+    }
+
+    printf("\n");
 }
+/*prints all the connections of a vertex by first using the vertexNeighbors function, returning the neighbors array
+and then printing from there*/
 void printNeighbors(graphPT g, int v)
 {
     if(g == NULL) return;
@@ -160,10 +172,21 @@ void printNeighbors(graphPT g, int v)
     int neighbors_size;
     int *neighbors  = vertexNeighbors(g, v, &neighbors_size);
 
-    for(int i = 0; i < )
+    printf("\nVertex %d neighbors: ", v);
+    for(int i = 0; i < neighbors_size; ++i)
+    {
+        printf("%d", neighbors[i]);
+        if(i != neighbors_size - 1)
+        {
+            printf(", ");
+        }
+    
+    }
+
+    free(neighbors);
 }
 
-// Accessors
+// Simply returns the adjacency matrix itself.
 int** getAdjacencyMatrix(graphPT g)
 {
     return g -> E;
