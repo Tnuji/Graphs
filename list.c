@@ -100,11 +100,53 @@ int numVertices(graphPT g)
     return g->N;
 }
 
+//Checks whether or not a vertex is valid
+int vertexValidity(graphPT g, int vertex)
+{
+    if(g == NULL) return 0;
+    if(vertex < 0 || vertex >= (g -> N))
+    {
+        return 0;
+    }
+    return 1;
+}
 /* Vertex operations */
-int* vertexNeighbors(graphPT g, int v, int* res_size);
+int* vertexNeighbors(graphPT g, int v, int* res_size)
+{
+    if(g == NULL) return NULL;
+    if(!(vertexValidity(g, v)))
+    {
+        printf("\nInvalid Vertex! Edge not created.");
+        return NULL;
+    }
+
+    int count = 0;
+    nodePT curr = g ->E[v] -> next;
+
+    while(curr != NULL)
+    {
+        ++count;
+        curr = curr -> next;
+    }
+
+    *res_size = count;
+    int *res = malloc(count * sizeof(int));
+
+    int j = 0;
+    curr = g -> E[v] -> next;
+    while(curr != NULL)
+    {
+        res[j] = curr -> data;
+        ++j;
+        curr = curr -> next;
+    }
+
+    return res;
+}
 
 /* Edge operations */
-int edgeExists(graphPT g, int v1, int v2);
+int edgeExists(graphPT g, int v1, int v2)
+
 int addEdge(graphPT g, int v1, int v2);
 int removeEdge(graphPT g, int v1, int v2);
 
