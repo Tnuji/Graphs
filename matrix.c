@@ -6,7 +6,9 @@ typedef struct
    int undirected; // 1 for undirected or 0 for directed
    int N; // number of vertices
    int ** E; // number of edges
-} *graphPT;
+} graph;
+
+typedef graph *graphPT;
 
 // graph.h
 /*
@@ -145,19 +147,6 @@ int* vertexNeighbors(graphPT g, int v, int* res_size)
     return res;
 }
 
-// Prints the entire graph of vertices and edges by using the print neighbors function
-void printGraph(graphPT g)
-{
-    if(g == NULL) return;
-
-    for(int v = 0; v < g -> N; ++v)
-    {
-        printNeighbors(g,v);
-        printf("\n");
-    }
-
-    printf("\n");
-}
 /*prints all the connections of a vertex by first using the vertexNeighbors function, returning the neighbors array
 and then printing from there*/
 void printNeighbors(graphPT g, int v)
@@ -185,9 +174,17 @@ void printNeighbors(graphPT g, int v)
 
     free(neighbors);
 }
-
-// Simply returns the adjacency matrix itself.
-int** getAdjacencyMatrix(graphPT g)
+// Prints the entire graph of vertices and edges by using the print neighbors function
+void printGraph(graphPT g)
 {
-    return g -> E;
+    if(g == NULL) return;
+
+    for(int v = 0; v < g -> N; ++v)
+    {
+        printNeighbors(g,v);
+        printf("\n");
+    }
+
+    printf("\n");
 }
+
